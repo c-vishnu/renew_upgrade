@@ -6,6 +6,7 @@ set -euo pipefail
 RUNNER_VERSION="${RUNNER_VERSION:-2.321.0}"
 RUNNER_DIR="${RUNNER_DIR:-$HOME/actions-runner}"
 REPO_URL="${REPO_URL:-https://github.com/c-vishnu/renew_upgrade}"
+RUNNER_TOKEN=AY4S3M2KT5MPPJUCL75QVTLKVO3VQ
 
 if [ -z "${RUNNER_TOKEN:-}" ]; then
   echo "Error: set RUNNER_TOKEN from GitHub (Settings → Actions → Runners → New self-hosted runner)."
