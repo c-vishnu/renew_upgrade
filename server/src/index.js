@@ -9,6 +9,8 @@
  *   POST /api/dev/reset           reset the demo data
  */
 
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import cors from 'cors';
 import express from 'express';
 import { CURRENCY, GST_RATE, MODULES, PAYMENT_METHODS, PLANS, RENEWAL_WINDOW_DAYS, TERMS } from './catalog.js';
@@ -16,6 +18,9 @@ import { EMPLOYEES, employeeDetail, employeeFilters, employeeRow } from './emplo
 import { renderInvoicePdf } from './invoice.js';
 import { applyCheckout, buildQuote, planMonthlyTotal, presentSubscription, toUTC } from './pricing.js';
 import { db, reset, save } from './store.js';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const clientDist = path.join(__dirname, '../../client/dist');
 
 const app = express();
 const PORT = Number(process.env.PORT || 4000);
@@ -124,9 +129,16 @@ app.post('/api/dev/reset', (_req, res) => {
   res.json({ ok: true });
 });
 
-app.use((req, res) => {
-  res.status(404).json({ message: `No route for ${req.method} ${req.originalUrl}` });
-});
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(clientDist));
+  app.get('*', (_req, res) => {
+    res.sendFile(path.join(clientDist, 'index.html'));
+  });
+} else {
+  app.use((req, res) => {
+    res.status(404).json({ message: `No route for ${req.method} ${req.originalUrl}` });
+  });
+}
 
 app.listen(PORT, () => {
   console.log(`Wayvida subscription API listening on http://localhost:${PORT}`);

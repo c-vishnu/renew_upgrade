@@ -9,8 +9,10 @@
     "dev:api": "npm --prefix server run dev",
     "dev:web": "npm --prefix client run dev",
     "build": "npm --prefix client run build",
+    "build:prod": "npm --prefix client run build",
     "preview": "npm --prefix client run preview",
-    "start": "npm --prefix server start"
+    "start": "npm --prefix server start",
+    "start:prod": "NODE_ENV=production npm --prefix server start"
   },
   "devDependencies": {
     "concurrently": "^9.1.2"

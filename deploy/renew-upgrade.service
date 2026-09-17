@@ -1,0 +1,15 @@
+[Unit]
+Description=Wayvida HRMS Subscription App
+After=network.target
+
+[Service]
+Type=simple
+User=YOUR_USER
+WorkingDirectory=/opt/renew_upgrade
+Environment=NODE_ENV=production
+Environment=PORT=4000
+ExecStart=/usr/bin/npm run start:prod
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
