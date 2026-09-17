@@ -13,6 +13,20 @@ export function formatDateTime(iso) {
   return `${formatDate(iso)}, 10:24 AM`;
 }
 
+export function formatDateTimeLocal(iso) {
+  if (!iso) return '--';
+  const date = new Date(iso);
+  if (Number.isNaN(date.getTime())) return '--';
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = MONTHS[date.getMonth()];
+  const year = date.getFullYear();
+  const hours = date.getHours();
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  const ampm = hours >= 12 ? 'PM' : 'AM';
+  const hour12 = hours % 12 || 12;
+  return `${day} ${month} ${year}, ${hour12}:${minutes} ${ampm}`;
+}
+
 export function termLabel(months) {
   const value = Number(months);
   if (value === 12) return '1 year';

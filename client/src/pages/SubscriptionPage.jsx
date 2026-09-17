@@ -3,7 +3,6 @@ import { useCallback, useEffect, useState } from 'react';
 import { api } from '../api.js';
 import Alert from '../components/Alert.jsx';
 import PageHeader from '../components/PageHeader.jsx';
-import Pill from '../components/Pill.jsx';
 import Toast from '../components/Toast.jsx';
 import AddModulesCard from '../features/subscription/AddModulesCard.jsx';
 import CurrentSubscriptionCard from '../features/subscription/CurrentSubscriptionCard.jsx';
@@ -109,9 +108,6 @@ export default function SubscriptionPage() {
   return (
     <>
       <PageHeader title="Subscription and billing" actions={headerActions} />
-      <Pill tone="success" dot>
-        Deploy test #3 · auto-deploy working
-      </Pill>
 
       <CurrentSubscriptionCard
         subscription={subscription}

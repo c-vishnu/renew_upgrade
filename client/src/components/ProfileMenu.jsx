@@ -1,6 +1,10 @@
 import { CreditCard, LogOut, Lock, User } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { formatDateTimeLocal } from '../format.js';
+import Pill from './Pill.jsx';
+
+const BUILD_TIME = import.meta.env.VITE_BUILD_TIME;
 
 const ITEMS = [
   { id: 'profile', label: 'Profile', icon: User, to: '/employees/WAY0001' },
@@ -73,9 +77,12 @@ export default function ProfileMenu({ name = 'Aahana Das', email = 'aahana.das@w
               </button>
             );
           })}
-          <p className="muted text-sm" style={{ padding: '10px 10px 4px' }}>
-            {company}
-          </p>
+          <div className="profile-menu__footer">
+            <p className="profile-menu__company">{company}</p>
+            <Pill tone="success" dot>
+              Last updated · {formatDateTimeLocal(BUILD_TIME)}
+            </Pill>
+          </div>
         </div>
       )}
     </div>
