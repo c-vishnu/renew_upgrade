@@ -4,6 +4,9 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 
+git fetch origin main
+git reset --hard origin/main
+
 npm run install:all
 npm run build:prod
 sudo systemctl restart renew-upgrade

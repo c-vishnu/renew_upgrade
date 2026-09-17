@@ -50,7 +50,7 @@ cd /opt/renew_upgrade
 
 1. Push to `main` on GitHub
 2. Workflow [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) runs on the self-hosted runner
-3. Steps: checkout → `npm run install:all` → `npm run build:prod` → `systemctl restart renew-upgrade` → health check
+3. Steps: `git pull` in `/home/devuser/projects/renew_upgrade` → `npm run install:all` → `npm run build:prod` → `systemctl restart renew-upgrade` → health check
 
 ## Troubleshooting
 
