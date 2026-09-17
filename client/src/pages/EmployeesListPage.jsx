@@ -460,7 +460,7 @@ export default function EmployeesListPage() {
         {error && (
           <div className="empty">
             <p className="table__strong">Could not load employees</p>
-            <p className="mt-6">{error} Make sure the API is running on port 4000.</p>
+            <p className="mt-6">{error} Make sure the API is running on port 4004.</p>
           </div>
         )}
       </div>

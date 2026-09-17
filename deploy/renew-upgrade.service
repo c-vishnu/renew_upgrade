@@ -7,7 +7,7 @@ Type=simple
 User=YOUR_USER
 WorkingDirectory=/opt/renew_upgrade
 Environment=NODE_ENV=production
-Environment=PORT=4000
+Environment=PORT=4004
 ExecStart=/usr/bin/npm run start:prod
 Restart=on-failure
 

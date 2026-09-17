@@ -23,7 +23,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const clientDist = path.join(__dirname, '../../client/dist');
 
 const app = express();
-const PORT = Number(process.env.PORT || 4000);
+const PORT = Number(process.env.PORT || 4004);
 
 app.use(cors());
 app.use(express.json());

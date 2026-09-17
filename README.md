@@ -14,7 +14,7 @@ light blue module cards) so it drops into the existing React app without looking
 
 ```bash
 npm run install:all   # root + server + client
-npm run dev           # api on :4000, web on :5173
+npm run dev           # api on :4004, web on :5173
 ```
 
 Open http://localhost:5173, then click the avatar in the top-right corner and choose

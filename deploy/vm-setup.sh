@@ -2,7 +2,7 @@
 # One-time VM setup for auto-deploy. Run on Ubuntu/Debian as a user with sudo access.
 set -euo pipefail
 
-APP_DIR="${APP_DIR:-/opt/renew_upgrade}"
+APP_DIR="${APP_DIR:-/projects/renew_upgrade}"
 APP_USER="${APP_USER:-$(whoami)}"
 REPO_URL="${REPO_URL:-https://github.com/c-vishnu/renew_upgrade.git}"
 
@@ -33,5 +33,5 @@ echo "==> Allowing passwordless service restart for deploy..."
 echo "${APP_USER} ALL=(ALL) NOPASSWD: /bin/systemctl restart renew-upgrade" | sudo tee /etc/sudoers.d/renew-upgrade > /dev/null
 sudo chmod 440 /etc/sudoers.d/renew-upgrade
 
-echo "==> VM setup complete. App should be running on port 4000."
-curl -f http://localhost:4000/api/health || echo "Warning: health check failed — check logs with: sudo journalctl -u renew-upgrade -f"
+echo "==> VM setup complete. App should be running on port 4004."
+curl -f http://localhost:4004/api/health || echo "Warning: health check failed — check logs with: sudo journalctl -u renew-upgrade -f"

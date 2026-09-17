@@ -15,7 +15,7 @@ chmod +x deploy/vm-setup.sh scripts/deploy.sh
 
 This installs Node 20, builds the app, creates the `renew-upgrade` systemd service, and configures passwordless restart for deploys.
 
-Verify: open `http://<VM-IP>:4000` or run `curl http://localhost:4000/api/health`.
+Verify: open `http://<VM-IP>:4004` or run `curl http://localhost:4004/api/health`.
 
 ### Optional: nginx reverse proxy
 

@@ -91,7 +91,7 @@ export default function SubscriptionPage() {
         <PageHeader title="Subscription and billing" />
         {loadError ? (
           <Alert tone="danger" title="Could not load your subscription">
-            {loadError} Make sure the API is running on http://localhost:4000.
+            {loadError} Make sure the API is running on http://localhost:4004.
           </Alert>
         ) : (
           <div className="stack gap-14">
