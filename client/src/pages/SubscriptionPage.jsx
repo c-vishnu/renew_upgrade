@@ -109,8 +109,8 @@ export default function SubscriptionPage() {
   return (
     <>
       <PageHeader title="Subscription and billing" actions={headerActions} />
-      <Pill tone="info" dot>
-        Deploy test #2 · CI verified at 3:08 PM
+      <Pill tone="success" dot>
+        Deploy test #3 · auto-deploy working
       </Pill>
 
       <CurrentSubscriptionCard
