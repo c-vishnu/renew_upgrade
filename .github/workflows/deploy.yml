@@ -23,8 +23,10 @@ jobs:
 
       - name: Pull latest code
         run: |
+          git config --global --add safe.directory "${{ env.APP_DIR }}"
           git fetch origin main
           git reset --hard origin/main
+          git log -1 --oneline
 
       - name: Install dependencies
         run: npm run install:all
@@ -37,5 +39,11 @@ jobs:
 
       - name: Health check
         run: |
-          sleep 3
-          curl -f http://localhost:4004/api/health
+          for i in 1 2 3 4 5; do
+            sleep 2
+            curl -fsS http://localhost:4004/api/health && exit 0
+            echo "Waiting for app to start (attempt $i/5)..."
+          done
+          echo "Health check failed"
+          sudo systemctl status renew-upgrade --no-pager || true
+          exit 1
