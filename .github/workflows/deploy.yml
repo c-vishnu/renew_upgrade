@@ -33,7 +33,7 @@ jobs:
         run: npm run build:prod
 
       - name: Restart app
-        run: sudo systemctl restart renew-upgrade
+        run: sudo -n /bin/systemctl restart renew-upgrade
 
       - name: Health check
         run: |
