@@ -4,49 +4,10 @@ on:
   push:
     branches: [main]
 
-env:
-  APP_DIR: /home/devuser/projects/renew_upgrade
-
 jobs:
   deploy:
     runs-on: self-hosted
-    defaults:
-      run:
-        working-directory: /home/devuser/projects/renew_upgrade
 
     steps:
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: npm
-          cache-dependency-path: /home/devuser/projects/renew_upgrade/package-lock.json
-
-      - name: Pull latest code
-        run: |
-          git config --global --add safe.directory "${{ env.APP_DIR }}"
-          git fetch origin main
-          git reset --hard origin/main
-          git log -1 --oneline
-
-      - name: Install dependencies
-        run: npm run install:all
-
-      - name: Build frontend
-        run: npm run build:prod
-
-      - name: Restart app
-        run: sudo -n /bin/systemctl restart renew-upgrade
-
-      - name: Health check
-        run: |
-          for i in 1 2 3 4 5 6 7 8 9 10; do
-            sleep 2
-            if /usr/bin/curl -fsS http://127.0.0.1:4004/api/health; then
-              echo ""
-              exit 0
-            fi
-            echo "Waiting for app (attempt $i/10)..."
-          done
-          echo "Health check failed"
-          /usr/bin/curl -v http://127.0.0.1:4004/api/health || true
-          exit 1
+      - name: Deploy
+        run: bash /home/devuser/projects/renew_upgrade/scripts/deploy.sh
