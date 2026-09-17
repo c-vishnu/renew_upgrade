@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 const ITEMS = [
   { id: 'profile', label: 'Profile', icon: User, to: '/employees/WAY0001' },
-  { id: 'subscription', label: 'Subscription', icon: CreditCard, to: '/settings/subscription' },
+  { id: 'subscription', label: 'Membership', icon: CreditCard, to: '/settings/subscription' },
   { id: 'password', label: 'Change Password', icon: Lock, to: '/change-password' },
   { id: 'logout', label: 'Logout', icon: LogOut, to: '/logout' },
 ];

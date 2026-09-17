@@ -37,7 +37,7 @@ const WORKSPACE_NAV = [
   { label: 'Role & Access', icon: ShieldCheck, to: '/role-access' },
 ];
 
-const BILLING_NAV = [{ label: 'Subscription', icon: CreditCard, to: '/settings/subscription' }];
+const BILLING_NAV = [{ label: 'Membership', icon: CreditCard, to: '/settings/subscription' }];
 
 export default function Sidebar() {
   const renderLink = ({ label, icon: Icon, to }) => (
