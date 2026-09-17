@@ -36,4 +36,6 @@ jobs:
         run: sudo systemctl restart renew-upgrade
 
       - name: Health check
-        run: curl -f http://localhost:4004/api/health
+        run: |
+          sleep 3
+          curl -f http://localhost:4004/api/health
