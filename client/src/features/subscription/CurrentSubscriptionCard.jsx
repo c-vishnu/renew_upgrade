@@ -29,7 +29,6 @@ export default function CurrentSubscriptionCard({ subscription, invoices, onRene
         <div className="sub-hero">
           <div className="sub-hero__main">
             <h2 className="sub-hero__name">{subscription.planName}</h2>
-            <p className="sub-hero__tagline">{subscription.tagline}</p>
 
             <p className="sub-hero__price">
               <span className="sub-hero__amount">{inr(subscription.monthlyTotal)}</span>
