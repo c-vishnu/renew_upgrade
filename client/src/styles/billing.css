@@ -3,15 +3,29 @@
 /* ---------- Current subscription ---------- */
 
 .sub-hero {
-  display: flex;
-  gap: 22px;
-  align-items: flex-start;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: minmax(290px, 1.25fr) minmax(170px, 0.7fr) minmax(260px, 1fr) auto;
+  align-items: center;
+  gap: 0;
 }
 
-.sub-hero__main {
-  flex: 1 1 380px;
+.sub-hero > * {
   min-width: 0;
+}
+
+.sub-hero__plan,
+.sub-hero__renewal,
+.sub-hero__payment {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2px 24px;
+  border-right: 1px solid var(--line-200);
+}
+
+.sub-hero__plan {
+  padding-left: 0;
 }
 
 .sub-hero__name {
@@ -25,7 +39,7 @@
   align-items: baseline;
   gap: 8px;
   flex-wrap: wrap;
-  margin-top: 16px;
+  margin-top: 10px;
 }
 
 .sub-hero__amount {
@@ -50,10 +64,6 @@
   color: var(--ink-400);
 }
 
-.sub-hero__group {
-  margin-top: 16px;
-}
-
 .sub-hero__label {
   font-size: 11.5px;
   font-weight: 700;
@@ -63,28 +73,8 @@
   margin-bottom: 8px;
 }
 
-/* Everything about time and money lives in this one panel, so the date, the
-   amount and the invoice number are each written once on the card. */
-
-.renew-panel {
-  flex: 0 1 320px;
-  min-width: 264px;
-  padding: 18px 20px;
-  border: 1px solid var(--line-200);
-  border-radius: var(--radius-lg);
-  background: var(--surface-muted);
-}
-
-.renew-panel__label {
-  font-size: 11.5px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--ink-500);
-}
-
 .renew-panel__date {
-  font-size: 21px;
+  font-size: 19px;
   font-weight: 700;
   letter-spacing: -0.01em;
   margin-top: 5px;
@@ -99,12 +89,6 @@
 .renew-panel__when.is-warning {
   color: var(--amber-700);
   font-weight: 600;
-}
-
-.renew-panel__divider {
-  height: 1px;
-  background: var(--line-200);
-  margin: 16px 0 14px;
 }
 
 .renew-panel__paid {
@@ -129,8 +113,8 @@
   align-items: center;
   gap: 8px;
   width: 100%;
-  margin-top: 14px;
-  padding: 9px 12px;
+  margin-top: 9px;
+  padding: 7px 10px;
   border: 1px solid var(--line-200);
   border-radius: var(--radius-md);
   background: var(--surface);
@@ -138,6 +122,16 @@
   color: var(--ink-700);
   text-align: left;
   transition: border-color 0.12s ease, color 0.12s ease;
+}
+
+.sub-hero__actions {
+  display: grid;
+  gap: 8px;
+  padding-left: 24px;
+}
+
+.sub-hero__actions .btn {
+  white-space: nowrap;
 }
 
 .renew-panel__file:hover {
@@ -515,9 +509,64 @@
   color: var(--ink-500);
 }
 
-@media (max-width: 820px) {
-  .renew-panel {
-    flex: 1 1 100%;
+@media (max-width: 1200px) {
+  .sub-hero {
+    grid-template-columns: minmax(260px, 1.15fr) minmax(170px, 0.75fr) minmax(230px, 1fr);
+    row-gap: 20px;
+  }
+
+  .sub-hero__payment {
+    border-right: 0;
+  }
+
+  .sub-hero__actions {
+    grid-column: 1 / -1;
+    display: flex;
+    padding: 16px 0 0;
+    border-top: 1px solid var(--line-100);
+  }
+}
+
+@media (max-width: 900px) {
+  .sub-hero {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .sub-hero__payment {
+    padding-top: 18px;
+    border-top: 1px solid var(--line-100);
+  }
+
+  .sub-hero__payment {
+    padding-left: 0;
+  }
+}
+
+@media (max-width: 620px) {
+  .sub-hero {
+    grid-template-columns: 1fr;
+    row-gap: 0;
+  }
+
+  .sub-hero__plan,
+  .sub-hero__renewal,
+  .sub-hero__payment {
+    padding: 16px 0;
+    border-right: 0;
+    border-bottom: 1px solid var(--line-100);
+  }
+
+  .sub-hero__plan {
+    padding-top: 0;
+  }
+
+  .sub-hero__renewal,
+  .sub-hero__payment {
+    border-top: 0;
+  }
+
+  .sub-hero__actions {
+    padding-top: 16px;
   }
 
   .plan-card {

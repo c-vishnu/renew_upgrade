@@ -33,7 +33,7 @@ file says.
 
 | Plan | Modules | Price / month |
 | --- | --- | --- |
-| Essential | Attendance, Leave, Employee Directory | ₹300 |
+| Essential | Attendance, Leave, Employee Directory | ₹2,400 |
 | Professional | Essential + Payroll, Task Management | ₹4,800 |
 | Enterprise | Professional + Recruitment, Helpdesk, Android app, iOS app | ₹7,200 |
 

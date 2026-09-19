@@ -38,7 +38,7 @@ export const MODULES = [
 export const PLANS = [
   { id: 'essential', code: 'ESS', name: 'Essential', order: 1,
     tagline: 'Attendance, leave and the employee directory for small teams.',
-    price: 300,
+    price: 2400,
     description: 'For small teams that want the HR basics running in one place.',
     includedEmployees: 50, extraEmployeePrice: 60,
     bestFor: 'Teams of up to 50 people moving off spreadsheets.',
