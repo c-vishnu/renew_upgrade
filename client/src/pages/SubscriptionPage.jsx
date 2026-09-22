@@ -5,7 +5,6 @@ import Alert from '../components/Alert.jsx';
 import PageHeader from '../components/PageHeader.jsx';
 import Toast from '../components/Toast.jsx';
 import AddModulesCard from '../features/subscription/AddModulesCard.jsx';
-import CurrentSubscriptionCard from '../features/subscription/CurrentSubscriptionCard.jsx';
 import InvoicesCard from '../features/subscription/InvoicesCard.jsx';
 import OrderDialog from '../features/subscription/OrderDialog.jsx';
 import UpgradePlansCard from '../features/subscription/UpgradePlansCard.jsx';
@@ -57,10 +56,6 @@ export default function SubscriptionPage() {
     );
   };
 
-  const scrollToModules = () => {
-    document.getElementById('add-modules')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  };
-
   const handlePaid = async (result) => {
     await loadSession();
     setSelectedModules([]);
@@ -109,12 +104,10 @@ export default function SubscriptionPage() {
     <>
       <PageHeader title="Subscription and billing" actions={headerActions} />
 
-      <CurrentSubscriptionCard
-        subscription={subscription}
+      <InvoicesCard
         invoices={invoices}
-        onRenew={() => setOrder({ mode: 'renew', planId: subscription.planId, addonModuleIds: [] })}
-        onAddModules={scrollToModules}
         onDownload={download}
+        onRenew={() => setOrder({ mode: 'renew', planId: subscription.planId, addonModuleIds: [] })}
       />
 
       <UpgradePlansCard
@@ -132,8 +125,6 @@ export default function SubscriptionPage() {
           setOrder({ mode: 'addons', planId: subscription.planId, addonModuleIds: selectedModules })
         }
       />
-
-      <InvoicesCard invoices={invoices} onDownload={download} />
 
       {order && (
         <OrderDialog

@@ -83,6 +83,8 @@ The sidebar exposes the HRMS navigation. Routes without a completed screen inten
 
 Implemented in `client/src/features/subscription/CurrentSubscriptionCard.jsx`, styled in `client/src/styles/billing.css`.
 
+- The card is no longer rendered on the subscription page; invoice history now occupies the first card position.
+- Each invoice row exposes a download icon beside its invoice number and a primary **Renew** action at the far right.
 - Uses a compact horizontal information row to avoid large empty areas.
 - Shows the plan name, monthly price, term total, next renewal, latest payment/invoice, and action buttons.
 - Included-module chips are intentionally not shown in this card.
@@ -107,8 +109,10 @@ Implemented in `client/src/features/subscription/CurrentSubscriptionCard.jsx`, s
 | Plan | Monthly price | Included modules |
 | --- | ---: | --- |
 | Essential | ₹2,400 | Attendance, Leave, Employee Directory |
-| Professional | ₹4,800 | Essential modules, Payroll, Task Management |
-| Enterprise | ₹7,200 | Professional modules, Recruitment, Helpdesk, Android app, iOS app |
+| Professional | ₹4,800 | Essential modules, Payroll, Connect, Task Management, Performance, Android app |
+| Enterprise | ₹7,200 | Professional modules, Recruitment, Helpdesk, iOS app, LMS |
+
+Purchasable add-ons are priced above ₹1,000/month. LMS has no in-app price or checkout; its **Subscribe** action redirects to `https://www.wayvida.com/plans`.
 
 For the current 12-month Essential demo:
 
@@ -117,13 +121,14 @@ For the current 12-month Essential demo:
 - GST at 18%: ₹5,184;
 - total paid: ₹33,984.
 
-Supported terms are 1, 3, 6, 12, 24, and 36 months. Performance is an optional add-on and is not bundled into a plan.
+Customers enter a whole-number purchase duration in months or years. The UI converts years to months, and the server accepts 1–120 months (up to 10 years).
 
 ## Pricing rules
 
 All authoritative calculations belong in `server/src/pricing.js` and are used by both quote and checkout flows.
 
 - Base plan charge = plan monthly price × term months.
+- Checkout duration is entered as months or years and repriced immediately; the API validates a 1–120 month range.
 - Add-on charge = module monthly price × applicable months.
 - GST is 18% of the taxable amount.
 - Renewal starts after the existing term so paid days are preserved.
@@ -174,9 +179,13 @@ The client wrapper is `client/src/api.js`; its base path is `/api`. Vite proxies
 
 ## Change log
 
+- 2026-09-21: Made LMS an externally subscribed module with no displayed price, linked its Subscribe action to Wayvida plans, and raised other add-on prices above ₹1,000/month.
+- 2026-09-21: Added Connect and LMS to the catalog, expanded Professional and Enterprise module bundles, and aligned plan-card feature content.
+- 2026-09-21: Replaced preset checkout terms with a duration input and Months/Years selector; pricing now supports any whole-number term from 1 to 120 months.
+- 2026-09-21: Replaced the invoice-row Download text button with a download icon beside the invoice number and added a Renew action at the row end.
+- 2026-09-21: Moved invoice history to the top of the subscription page and removed the current-subscription summary from that page.
 - 2026-09-19: Added this durable knowledge document and repository instruction requiring future agents to maintain it.
 - 2026-09-19: Made the sidebar collapse/expand control functional with persistent icon-only mode.
 - 2026-09-18: Removed the company selector from the top bar.
 - 2026-09-18: Redesigned Current Subscription as a compact horizontal summary; removed its tagline and included-module chips.
 - 2026-09-18: Changed Essential to ₹2,400/month and exposed the ₹28,800 annual pre-tax amount; seeded invoice total is ₹33,984 including GST.
-

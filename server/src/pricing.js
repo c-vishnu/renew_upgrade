@@ -5,13 +5,19 @@
  * side checkout, so the amount a customer sees is always the amount charged.
  */
 
-import { CURRENCY, GST_RATE, MODULES, PLANS, TERMS, MODES, RENEWAL_WINDOW_DAYS } from './catalog.js';
+import { CURRENCY, GST_RATE, MODULES, PLANS, MODES, RENEWAL_WINDOW_DAYS } from './catalog.js';
 
 const DAY = 86400000;
 
 export const moduleById = (id) => MODULES.find((module) => module.id === id) || null;
 export const planById = (id) => PLANS.find((plan) => plan.id === id) || null;
-export const termByMonths = (months) => TERMS.find((term) => term.months === Number(months)) || null;
+export const termLabel = (months) => {
+  if (months % 12 === 0) {
+    const years = months / 12;
+    return `${years} year${years === 1 ? '' : 's'}`;
+  }
+  return `${months} month${months === 1 ? '' : 's'}`;
+};
 /** Plans are priced per plan in the catalogue; only add-on modules are priced per module. */
 export const planMonthlyTotal = (plan) => plan.price || 0;
 
@@ -80,8 +86,10 @@ export function buildQuote({
   const info = MODES[mode];
   if (!info) errors.push('Unknown checkout mode.');
 
-  const term = termByMonths(termMonths) || termByMonths(12);
-  const months = term.months;
+  const requestedMonths = Number(termMonths);
+  const validTerm = Number.isInteger(requestedMonths) && requestedMonths >= 1 && requestedMonths <= 120;
+  if (!validTerm) errors.push('Choose a whole-number duration between 1 and 120 months.');
+  const months = validTerm ? requestedMonths : 12;
   const currentPlan = planById(subscription.planId);
   if (!currentPlan) errors.push('Your current plan could not be found.');
 
@@ -98,7 +106,16 @@ export function buildQuote({
   }
 
   const active = activeAddonIds(subscription);
-  const requestedAddons = Array.from(new Set(addonModuleIds.filter((id) => moduleById(id))));
+  const externallySold = addonModuleIds
+    .map((id) => moduleById(id))
+    .filter((module) => module?.externalUrl);
+  if (externallySold.length > 0) {
+    errors.push(`${externallySold.map((module) => module.name).join(', ')} must be subscribed separately.`);
+  }
+  const requestedAddons = Array.from(new Set(addonModuleIds.filter((id) => {
+    const module = moduleById(id);
+    return module && !module.externalUrl;
+  })));
   const addonIds = Array.from(new Set([...active, ...requestedAddons])).filter(
     (id) => !targetPlan.moduleIds.includes(id),
   );
@@ -192,7 +209,7 @@ export function buildQuote({
     addonModuleIds: addonIds,
     billableAddonModuleIds: billableAddons,
     termMonths: months,
-    termLabel: term.label,
+    termLabel: termLabel(months),
     currency: CURRENCY,
     gstRate: GST_RATE,
     currentExpiry: subscription.expiresAt,

@@ -1,8 +1,8 @@
-import { Download, FileText } from 'lucide-react';
+import { Download, FileText, RefreshCw } from 'lucide-react';
 import Pill from '../../components/Pill.jsx';
 import { formatDate, inr, invoiceTypeLabel, paymentLabel, termLabel } from '../../format.js';
 
-export default function InvoicesCard({ invoices, onDownload }) {
+export default function InvoicesCard({ invoices, onDownload, onRenew }) {
   return (
     <div className="card">
       <div className="card__head">
@@ -40,7 +40,20 @@ export default function InvoicesCard({ invoices, onDownload }) {
               <tbody>
                 {invoices.map((invoice) => (
                   <tr key={invoice.id}>
-                    <td className="table__strong">{invoice.number}</td>
+                    <td className="table__strong">
+                      <span className="invoice-number">
+                        {invoice.number}
+                        <button
+                          type="button"
+                          className="invoice-number__download"
+                          onClick={() => onDownload(invoice)}
+                          aria-label={`Download invoice ${invoice.number}`}
+                          title={`Download invoice ${invoice.number}`}
+                        >
+                          <Download size={16} strokeWidth={2} />
+                        </button>
+                      </span>
+                    </td>
                     <td className="table__muted">{formatDate(invoice.date)}</td>
                     <td>{invoiceTypeLabel(invoice)}</td>
                     <td>{invoice.planName}</td>
@@ -53,11 +66,11 @@ export default function InvoicesCard({ invoices, onDownload }) {
                     <td className="table__right">
                       <button
                         type="button"
-                        className="btn btn--secondary btn--sm"
-                        onClick={() => onDownload(invoice)}
+                        className="btn btn--primary btn--sm"
+                        onClick={onRenew}
                       >
-                        <Download size={15} strokeWidth={2} />
-                        Download
+                        <RefreshCw size={15} strokeWidth={2} />
+                        Renew
                       </button>
                     </td>
                   </tr>

@@ -13,7 +13,7 @@ export default function AddModulesCard({ catalog, subscription, selectedIds, onT
   const available = catalog.modules.filter((module) => !current.moduleIds.includes(module.id));
   const activeAddons = new Map(subscription.addonModules.map((module) => [module.id, module]));
 
-  const selected = available.filter((module) => selectedIds.includes(module.id));
+  const selected = available.filter((module) => !module.externalUrl && selectedIds.includes(module.id));
   const monthly = selected.reduce((sum, module) => sum + module.price, 0);
 
   return (
@@ -22,7 +22,7 @@ export default function AddModulesCard({ catalog, subscription, selectedIds, onT
         <span className="card__title">Add modules</span>
         <div className="card__head-actions">
           <span className="muted text-sm">
-            Not included in {current.name} {'\u00B7'} priced per module, per month
+            Not included in {current.name} {'\u00B7'} flexible add-ons
           </span>
         </div>
       </div>
@@ -32,12 +32,16 @@ export default function AddModulesCard({ catalog, subscription, selectedIds, onT
           const activeAddon = activeAddons.get(module.id);
           return (
             <li className={`module-row${activeAddon ? ' is-active' : ''}`} key={module.id}>
-              <Checkbox
-                checked={Boolean(activeAddon) || selectedIds.includes(module.id)}
-                disabled={Boolean(activeAddon)}
-                label={module.name}
-                onChange={() => onToggle(module.id)}
-              />
+              {module.externalUrl ? (
+                <span className="module-row__select-spacer" aria-hidden="true" />
+              ) : (
+                <Checkbox
+                  checked={Boolean(activeAddon) || selectedIds.includes(module.id)}
+                  disabled={Boolean(activeAddon)}
+                  label={module.name}
+                  onChange={() => onToggle(module.id)}
+                />
+              )}
               <div className="module-row__main">
                 <p className="module-row__name">
                   {module.name}
@@ -49,10 +53,18 @@ export default function AddModulesCard({ catalog, subscription, selectedIds, onT
                 </p>
                 <p className="module-row__desc">{module.summary}</p>
               </div>
-              <p className="module-row__price">
-                {inr(module.price)}
-                <span className="muted"> / month</span>
-              </p>
+              <div className="module-row__aside">
+                {module.externalUrl ? (
+                  <a className="btn btn--secondary btn--sm" href={module.externalUrl}>
+                    Subscribe
+                  </a>
+                ) : (
+                  <p className="module-row__price">
+                    {inr(module.price)}
+                    <span className="muted"> / month</span>
+                  </p>
+                )}
+              </div>
             </li>
           );
         })}

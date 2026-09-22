@@ -16,7 +16,8 @@ const TITLES = {
  * The quote comes from the server, so what is charged is what is shown.
  */
 export default function OrderDialog({ request, catalog, customer, onClose, onPaid }) {
-  const [termMonths, setTermMonths] = useState(12);
+  const [duration, setDuration] = useState('1');
+  const [durationUnit, setDurationUnit] = useState('years');
   const [quote, setQuote] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -24,10 +25,24 @@ export default function OrderDialog({ request, catalog, customer, onClose, onPai
   const [busy, setBusy] = useState(false);
   const [receipt, setReceipt] = useState(null);
 
+  const durationNumber = Number(duration);
+  const termMonths = durationUnit === 'years' ? durationNumber * 12 : durationNumber;
+  const durationError = !Number.isInteger(durationNumber) || durationNumber < 1 || termMonths > 120
+    ? `Enter a whole number between 1 and ${durationUnit === 'years' ? 10 : 120}.`
+    : '';
+
   const requestKey = `${request.mode}|${request.planId}|${[...request.addonModuleIds].sort().join(',')}`;
 
   useEffect(() => {
     let cancelled = false;
+    if (durationError) {
+      setQuote(null);
+      setLoading(false);
+      setError('');
+      return () => {
+        cancelled = true;
+      };
+    }
     setLoading(true);
     api
       .quote({
@@ -51,7 +66,7 @@ export default function OrderDialog({ request, catalog, customer, onClose, onPai
       cancelled = true;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [requestKey, termMonths]);
+  }, [requestKey, termMonths, durationError]);
 
   const pay = async () => {
     setBusy(true);
@@ -130,7 +145,7 @@ export default function OrderDialog({ request, catalog, customer, onClose, onPai
     );
   }
 
-  const blocked = loading || !quote || quote.errors.length > 0 || Boolean(error);
+  const blocked = loading || !quote || quote.errors.length > 0 || Boolean(error) || Boolean(durationError);
   const title = (TITLES[request.mode] || TITLES.addons)(quote?.planName || customer.companyName);
 
   return (
@@ -164,19 +179,34 @@ export default function OrderDialog({ request, catalog, customer, onClose, onPai
         </div>
       )}
 
-      <p className="section-hint">How long do you want to pay for?</p>
-      <div className="term-grid">
-        {catalog.terms.map((term) => (
-          <button
-            key={term.months}
-            type="button"
-            className={`term-option${term.months === termMonths ? ' is-active' : ''}`}
-            onClick={() => setTermMonths(term.months)}
-          >
-            {term.label}
-          </button>
-        ))}
+      <p className="section-hint">
+        {request.mode === 'renew' ? 'How long do you want to renew for?' : 'How long do you want to purchase for?'}
+      </p>
+      <div className="duration-control">
+        <input
+          className="duration-input"
+          type="number"
+          min="1"
+          max={durationUnit === 'years' ? '10' : '120'}
+          step="1"
+          value={duration}
+          onChange={(event) => setDuration(event.target.value)}
+          aria-label="Renewal duration"
+        />
+        <div className="duration-unit" aria-label="Duration unit">
+          {['months', 'years'].map((unit) => (
+            <button
+              key={unit}
+              type="button"
+              className={`duration-unit__option${durationUnit === unit ? ' is-active' : ''}`}
+              onClick={() => setDurationUnit(unit)}
+            >
+              {unit === 'months' ? 'Months' : 'Years'}
+            </button>
+          ))}
+        </div>
       </div>
+      {durationError && <p className="duration-error">{durationError}</p>}
 
       {quote && (
         <>
